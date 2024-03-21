@@ -1,0 +1,92 @@
+body{
+  background-image: radial-gradient(#00143d 1%, #122d66 100%);
+}
+
+.prompt{
+  width: fit-content; 
+    border: solid 4px #00143d;
+    box-shadow: lightgray 0px 0px 6px 9px;
+    padding: 1%;
+    margin: auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.inputRow{
+  display: flex;
+  width: fit-content;
+  transform: translateX(-50%);
+  position: relative;
+  left: 50%;
+  font-family: emoji;
+}
+
+.textPrompt{
+  color: white;
+  margin: 0px 10px 0px 0px;
+  font-family: emoji;
+  display: flex;
+  align-items: center;
+}
+
+.inputPrompt[type = "text"], .inputPrompt[type = "number"], .inputPrompt select{
+  background-color: transparent;
+  border: lightgray 2px solid;
+  border-radius: 5px;
+  outline: none;
+  color: white;
+  width: 300px;
+}
+
+.inputPrompt{
+  background-color: #061c4a;
+  border: lightgray 2px solid;
+  border-radius: 5px;
+  outline: none;
+  color: white;
+  user-select: none;
+  padding: 5px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+div-select > div:hover{
+  background-color: dimgray;
+}
+
+div-select > div{
+  user-select: none;
+  cursor: pointer;
+  padding: 1px 2px;
+}
+
+option{
+  border: 0px;
+}
+
+.inputPromptExpandMenu{
+  height: fit-content;
+  background: transparent;
+  border: solid 2px lightgray;
+  margin-left: 5px;
+  padding: 2px 0px;
+  border-radius: 5px;
+}
+
+.inputPromptExpandMenuDrawing{
+  stroke: lightgray;
+  fill: transparent;
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
