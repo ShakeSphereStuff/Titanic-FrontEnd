@@ -75,6 +75,8 @@ div-select > div{
   user-select: none;
   cursor: pointer;
   padding: 1px 2px;
+  z-index: 10;
+  position: relative;
 }
 
 option{
@@ -104,4 +106,9 @@ option{
   border: solid 2px white;
   border-radius: 6px;
   color: white;
+}
+
+.inputPromptOption{
+  position: relative;
+  z-index: 10;
 }

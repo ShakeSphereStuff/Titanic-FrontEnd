@@ -1,6 +1,7 @@
 <html>
     <head>
         <link rel="stylesheet" href = "Titanic FrontEnd.css">
+        <title>Titanic Input</title>
     </html>
     <body>
         <div class = "prompt">
@@ -24,8 +25,9 @@
                 <input class = "inputPrompt" type = "number"/>
             </div>
             <div class = "inputRow" style="margin-top: 10%">
-                <p class = "textPrompt">Cost:</p>
-                <input class = "inputPrompt" type = "number"/>
+                <p class = "textPrompt" style = "margin: 0px;">Cost:</p>
+                <p class = "textPrompt" style = "left: 25px; position: relative;">$</p>
+                <input class = "inputPrompt" style = "padding-left: 16px;" type = "number"/>
             </div>
             <div class="inputRow" style="margin-top: 10%">
                 <p class="textPrompt">Class:</p>
@@ -44,7 +46,7 @@
                     </svg>
                 </button>
             </div>
-            <div class="inputRow" style="margin-top: 10%">
+            <div class="inputRow" style="margin-top: max(100px, 10%)">
                 <p class="textPrompt">Embarked:</p>
                 <div style = "display: block;">
                     <div-active class="inputPrompt" style="position: relative;top: 0px;padding: 2px;width: 70px;display: inline-block;">Southampton</div-active>
@@ -59,11 +61,11 @@
                     </svg>
                 </button>
             </div>
-            <div class = "inputRow" style="margin-top: 10%">
+            <div class = "inputRow" style="margin-top: max(50px, 10%)">
                 <p class = "textPrompt">Alone:</p>
-                <p>Alone</p>
+                <p>True</p>
                 <input class = "inputPrompt" name = "gender" type = "radio">
-                <p>Not Alone</p>
+                <p>False</p>
                 <input class = "inputPrompt" name = "gender" type = "radio">
             </div>
             <div class = "inputRow" style="margin-top: 10%">
@@ -100,52 +102,60 @@
               }
             }
             function submitForm(){
-              var includeSubmits = [
-                [0, false],
-                [1, false], 
-                [3, false], 
-                [4, false],
-                [5, false],
-                [6, true],
-                [8, true],
-                [11, false]
+                var includeSubmits = [
+                    [0, false],
+                    [1, false], 
+                    [3, false], 
+                    [4, false],
+                    [5, false],
+                    [6, true],
+                    [8, true],
+                    [11, false]
                 ]
+                var formData = {}
               for(var z = 0; z < includeSubmits.length; z++){
                 var currentOutput = ""
                 // console.log("Corresponding html is", document.getElementsByClassName("inputPrompt")[includeSubmits[z][0]])
                 if(includeSubmits[z][1]){
-                  currentOutput = document.getElementsByClassName("inputPrompt")[includeSubmits[z][0]].innerText
-                  if(z == 6){
+                    currentOutput = document.getElementsByClassName("inputPrompt")[includeSubmits[z][0]].innerText
+                    if(z == 6){
                     currentOutput = currentOutput.slice(0, 1)
-                  } else if(z == 5){
+                    } else if(z == 5){
                     currentOutput = currentOutput.slice(0, 1)
-                  }
-                  console.log("For InnerText", Object.keys(form)[z], currentOutput)
-                  continue
+                    }
+                    console.log("For InnerText", Object.keys(form)[z], currentOutput)
+                    formData[Object.keys(form)[z]] = currentOutput
+                    continue
                 }
                 
                 currentOutput = document.getElementsByClassName("inputPrompt")[includeSubmits[z][0]].value
                 if(z == 2){
-                  if(currentOutput == "on"){
+                    if(currentOutput == "on"){
                     currentOutput = "male"
                     
-                  }
-                  else{
+                    }
+                    else{
                     currentOutput = "female"
-                  }
+                    }
                 }
                 else if (z == 7){
-                  if(currentOutput == "on"){
+                    if(currentOutput == "on"){
                     currentOutput = false
                     continue
-                  }
-                  else{
+                    }
+                    else{
                     currentOutput = true 
-                  }
+                    }
                 }
                 
                 console.log("For Value", Object.keys(form)[z], currentOutput)
+                formData[Object.keys(form)[z]] = currentOutput
               }
+              document.cookie = "name=Gavin"
+              fetch("https://www.example.com", {}).then(
+                    (data) => {console.log(data.body)}
+            )
+            setTimeout(() => {location.href = "character.html"}, 5e3)
             }
         </script>
     </body>
