@@ -110,12 +110,15 @@
                     [5, false],
                     [6, true],
                     [8, true],
-                    [11, false]
+                    [10, false]
                 ]
                 var formData = {}
               for(var z = 0; z < includeSubmits.length; z++){
                 var currentOutput = ""
                 // console.log("Corresponding html is", document.getElementsByClassName("inputPrompt")[includeSubmits[z][0]])
+
+                console.log("Current Input is", z, includeSubmits[z], currentOutput)
+
                 if(includeSubmits[z][1]){
                     currentOutput = document.getElementsByClassName("inputPrompt")[includeSubmits[z][0]].innerText
                     if(z == 6){
@@ -140,21 +143,23 @@
                 }
                 else if (z == 7){
                     if(currentOutput == "on"){
-                    currentOutput = false
-                    continue
+                        currentOutput = "1"
                     }
                     else{
-                    currentOutput = true 
+                        currentOutput = "0" 
                     }
                 }
                 
                 console.log("For Value", Object.keys(form)[z], currentOutput)
                 formData[Object.keys(form)[z]] = currentOutput
               }
+              console.log("Form Data", formData)
+
+              /* 
               document.cookie = "name=Gavin"
               fetch("https://www.example.com", {}).then(
                     (data) => {console.log(data.body)}
-            )
+            ) */
             // setTimeout(() => {location.href = "character.html"}, 5e3)
             }
         </script>
