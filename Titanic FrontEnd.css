@@ -1,15 +1,15 @@
-body{
+body {
   background-image: radial-gradient(#00143d 1%, #122d66 100%);
 }
 
-p{
+p {
   user-select: none;
   color: white;
-}
+} 
 
-.prompt{
+.prompt{ 
   width: fit-content; 
-    border: solid 4px #00143d;
+    border: solid 4px #00143d; 
     box-shadow: lightgray 0px 0px 6px 9px;
     padding: 1%;
     margin: auto;
