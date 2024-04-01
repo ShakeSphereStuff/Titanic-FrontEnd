@@ -1,0 +1,243 @@
+<html>
+    <head>
+
+    </head>
+    <body style="background-color: #24242a; margin: 0px;">
+        <div style="position: absolute; height: 10%; width: 100%; background-color: #40415e;">
+            <div style="left: 10%; position: relative; top: 50%; height: 25%; width: fit-content; transform: translate(0px, -50%); display: flex;">
+                <img></img>
+                <p style="margin: auto 0px; position: absolute; color: white; font-family: monospace; font-size: 200%;">
+                    AI
+                </p>
+            </div>
+        </div>
+        <div style="position: absolute; top: 90%; height: 10%; width: 100%; background-color: #40415e;">
+            <div style="left: 10%; position: relative; top: 50%; height: 25%; width: fit-content; transform: translate(0px, -50%); display: flex;">
+                <img></img>
+                <p style="margin: auto 0px; position: absolute; color: white; font-family: monospace; font-size: 200%;">
+                    Human
+                </p>
+            </div>
+        </div>
+        
+        <svg width="400" height="400" viewBox="0 0 400 400" style="left: 50%; top: 50%; position: absolute; transform: translate(-50%, -50%);"></svg>
+        <svg width="400" height="400" viewBox="0 0 400 400" style="left: 50%; top: 50%; position: absolute; transform: translate(-50%, -50%);"></svg>
+
+        <script>
+            var container = document.getElementsByTagName("svg")[0]
+            var chessPieces = [
+                ["BR", "BN", "BB", "BQ", "BK", "BB", "BN", "BR"],
+                ["BP", "BP", "BP", "BP", "BP", "BP", "BP", "BP"],
+                ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
+                ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
+                ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
+                ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
+                ["WP", "WP", "WP", "WP", "WP", "WP", "WP", "WP"],
+                ["WR", "WN", "WB", "WQ", "WK", "WB", "WN", "WR"],
+            ]
+            var selectedPiece = [-1, -1]
+            var selectedParts = []
+            var playStage = "selectPiece" 
+            for(var y = 0; y < 8; y++){
+                for(var x = 0; x < 8; x++){
+                    var newSquare = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+                    newSquare.setAttribute("width", container.clientWidth / 8)
+                    newSquare.setAttribute("height", container.clientHeight / 8)
+                    newSquare.setAttribute("x", (container.clientWidth / 8) * x)
+                    newSquare.setAttribute("y", (container.clientHeight / 8) * y)
+                    if((y * 7 + x) % 2 == 0){
+                        newSquare.setAttribute("fill", "black")
+                        container.appendChild(newSquare)
+                        continue
+                    }
+                    newSquare.setAttribute("fill", "white")
+                    container.appendChild(newSquare)
+                }
+            }
+            container = document.getElementsByTagName("svg")[1]
+            for(var y = 0; y < 8; y++){
+                for(var x = 0; x < 8; x++){
+                    var newText = document.createElementNS("http://www.w3.org/2000/svg", "text")
+                    newText.setAttribute("x", 6 + x * 50)
+                    newText.setAttribute("y", 46 + y * 50)
+                    newText.setAttribute("class", "chessPiece")
+                    newText.innerHTML = chessPieces[y][x].slice(1, 2)
+                    container.appendChild(newText)             
+                }
+            }
+            container.addEventListener("mousemove", (e) => {
+                var leftCoords = Math.floor((e.clientX -container.getBoundingClientRect().left) / (container.clientWidth / 8))
+                var topCoords = Math.floor((e.clientY -container.getBoundingClientRect().top) / (container.clientHeight / 8))
+                console.log("Coords", leftCoords, topCoords)
+                switch(playStage){
+                    case "selectPiece":
+                        console.log("Selecting Piece", chessPieces[topCoords][leftCoords])
+                        if(chessPieces[topCoords][leftCoords] != "  "){
+                            container.style.cursor = "pointer"
+                            break
+                        }
+                        container.style.cursor = "default"
+                        break
+
+                    case "moveTo":
+                        console.log("Selecting Piece", chessPieces[topCoords][leftCoords])
+                        if(chessPieces[topCoords][leftCoords] != "  "){
+                            container.style.cursor = "pointer"
+                            break
+                        }
+                        container.style.cursor = "default"
+                        break
+                    
+                    case "opponentTurn":
+                        playStage = "selectPiece"
+                        break
+                    
+                    default:
+                        "break"
+                }
+                
+            })
+            container.addEventListener("mouseup", (e) => {
+                var leftCoords = Math.floor((e.clientX -container.getBoundingClientRect().left) / (container.clientWidth / 8))
+                var topCoords = Math.floor((e.clientY -container.getBoundingClientRect().top) / (container.clientHeight / 8))
+                console.log("Selecting Piece", chessPieces[topCoords][leftCoords])
+                if(chessPieces[topCoords][leftCoords] != "  " && playStage == "selectPiece"){
+                    selectedPiece = [leftCoords, topCoords]
+                    playStage = "moveTo"
+                    switch(chessPieces[topCoords][leftCoords]){
+                        case "WP":
+                            if((chessPieces[topCoords][leftCoords] == "WP" && topCoords == 6)){
+                                moveSpace(leftCoords, topCoords - 1)
+                                moveSpace(leftCoords, topCoords - 2)
+                                break
+                            }
+                            moveSpace(leftCoords, topCoords - 1)
+                            break
+
+                        case "WN": 
+                            moveSpace(leftCoords - 2, topCoords - 1)
+                            moveSpace(leftCoords - 2, topCoords + 1)
+                            moveSpace(leftCoords + 2, topCoords - 1)
+                            moveSpace(leftCoords + 2, topCoords + 1)
+                            moveSpace(leftCoords - 1, topCoords - 2)
+                            moveSpace(leftCoords - 1, topCoords + 2)
+                            moveSpace(leftCoords + 1, topCoords - 2)
+                            moveSpace(leftCoords + 1, topCoords + 2)
+                            break
+
+                        case "WR":
+                            moveLine(leftCoords, topCoords, `${leftCoords}, ${topCoords} - step`)
+                            moveLine(leftCoords, topCoords, `${leftCoords}, ${topCoords} + step`)
+                            moveLine(leftCoords, topCoords, `${leftCoords} - step, ${topCoords}`)
+                            moveLine(leftCoords, topCoords, `${leftCoords} + step, ${topCoords}`)
+                            break
+
+                        case "WB":
+                            moveLine(leftCoords, topCoords, `x - step, y - step`)
+                            moveLine(leftCoords, topCoords, `x - step, y + step`)
+                            moveLine(leftCoords, topCoords, `x + step, y - step`)
+                            moveLine(leftCoords, topCoords, `x + step, y + step`)
+                            break
+                        
+                        case "WQ":
+                            moveLine(leftCoords, topCoords, `${leftCoords}, step`)
+                            moveLine(leftCoords, topCoords, `${leftCoords}, ${topCoords} + step`)
+                            moveLine(leftCoords, topCoords, `step, ${topCoords}`)
+                            moveLine(leftCoords, topCoords, `${leftCoords} + step, ${topCoords}`)
+                            moveLine(leftCoords, topCoords, `x - step, y - step`)
+                            moveLine(leftCoords, topCoords, `x - step, y + step`)
+                            moveLine(leftCoords, topCoords, `x + step, y - step`)
+                            moveLine(leftCoords, topCoords, `x + step, y + step`)
+                            break
+
+                        case "WK":
+                            moveSpace(leftCoords - 1, topCoords - 1)
+                            moveSpace(leftCoords - 1, topCoords)
+                            moveSpace(leftCoords - 1, topCoords + 1)
+                            moveSpace(leftCoords, topCoords + 1)
+                            moveSpace(leftCoords + 1, topCoords + 1)
+                            moveSpace(leftCoords + 1, topCoords)
+                            moveSpace(leftCoords + 1, topCoords - 1)
+                            moveSpace(leftCoords, topCoords - 1)
+                            break
+
+                        default:
+                            break
+                    }
+                    return
+                }
+                if(chessPieces[topCoords][leftCoords].slice(0, 1) == "W" && playStage == "moveTo"){
+                    playStage = "selectPiece"
+                    var circlesLength = document.getElementsByClassName("circle").length
+                    for(var removeCircle = 0; removeCircle < circlesLength; removeCircle++){
+                        document.getElementsByClassName("circle")[0].remove()
+                    }
+                }
+            })
+
+            function moveLine(x, y, algorithm){
+                for(var step = 1; step < 8; step++){
+                    var testSpace = moveSpace(eval(algorithm.split(",")[0]), eval(algorithm.split(",")[1]))
+                    console.log("TestSpace Returns", testSpace)
+                    if(!testSpace){
+                        return
+                    }
+                }
+            }
+
+            function moveSpace(x, y){
+                console.log("Piece Coords are", x, y)
+                if(!(7 >= x && x >= 0 && 7 >= y && y >= 0)){
+                    console.log("Not In Board")
+                    return false
+                }
+                if(chessPieces[y][x] != "  "){
+                    console.log("Is Rejected")
+                    return false
+                }
+                var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle")
+                circle.setAttribute("class", "circle")
+                selectedParts.push([x, y])
+                circle.setAttribute("cx", x * container.clientWidth / 8 + 25)
+                circle.setAttribute("cy", y * container.clientHeight / 8 + 25)
+                circle.setAttribute("r", 15)
+                circle.addEventListener("click", (e) => {
+                    playStage = "opponentTurn"
+                    var circlesLength = document.getElementsByClassName("circle").length
+                    var newCoords = [
+                        Math.floor((e.clientX - container.getBoundingClientRect().left) / (container.clientWidth / 8)), 
+                        Math.floor((e.clientY - container.getBoundingClientRect().top) / (container.clientHeight / 8))
+                    ]
+                    console.log("Move To", newCoords[0], newCoords[1])
+                    var changedPiece = chessPieces[selectedPiece[1]][selectedPiece[0]]
+                    chessPieces[selectedPiece[1]][selectedPiece[0]] = "  "
+                    container.getElementsByTagName("text")[selectedPiece[1] * 8 + selectedPiece[0]].textContent = "  "
+                    selectedPiece[0] = newCoords[0]
+                    selectedPiece[1] = newCoords[1]
+                    chessPieces[selectedPiece[1]][selectedPiece[0]] = changedPiece
+                    container.getElementsByTagName("text")[selectedPiece[1] * 8 + selectedPiece[0]].textContent = changedPiece.slice(1, 2)
+                    for(var removeCircle = 0; removeCircle < circlesLength; removeCircle++){
+                        document.getElementsByClassName("circle")[0].remove()
+                    }
+                })
+
+                container.appendChild(circle)
+                return true
+            }
+       </script>
+       <style>
+            .circle{
+                stroke: gray;
+                stroke-width: 5;
+                fill: transparent;
+                cursor: pointer;
+            }
+            .chessPiece{
+                fill: gray;
+                font-family: monospace;
+                font-size: 60;
+                user-select: none;
+            }
+        </style>
+    </body>
+</html>
