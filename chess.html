@@ -69,6 +69,17 @@
             }
             container.addEventListener("mousemove", (e) => {gameOperator(e)})
 
+            function opponentMoves(formerX, formerY, latterX, latterY){
+                var oldPiece = document.getElementsByClassName("chessPiece")[latterY * 8 + latterX].textContent
+                chessPieces[latterY][latterX] = chessPieces[formerY][formerX]
+                chessPieces[formerY][formerX] = oldPiece
+                document.getElementsByClassName("chessPiece")[latterY * 8 + latterX].textContent = document.getElementsByClassName("chessPiece")[formerY * 8 + formerX].textContent
+                document.getElementsByClassName("chessPiece")[formerY * 8 + formerX].textContent = oldPiece
+                if(chessPieces[latterY][latterX] != "  "){
+                    document.getElementsByClassName("chessPiece")[formerY * 8 + formerX].textContent = " "
+                }
+            }
+
             function gameOperator(e){
                 var leftCoords = Math.floor((e.clientX -container.getBoundingClientRect().left) / (container.clientWidth / 8))
                 var topCoords = Math.floor((e.clientY -container.getBoundingClientRect().top) / (container.clientHeight / 8))
@@ -113,12 +124,27 @@
                     playStage = "moveTo"
                     switch(chessPieces[topCoords][leftCoords]){
                         case "WP":
-                            if((chessPieces[topCoords][leftCoords] == "WP" && topCoords == 6)){
+                            if(chessPieces[topCoords][leftCoords] == "WP" && topCoords == 6){
                                 moveSpace(leftCoords, topCoords - 1)
                                 moveSpace(leftCoords, topCoords - 2)
                                 break
                             }
-                            moveSpace(leftCoords, topCoords - 1)
+                            console.log("Adjesent Pieces are", chessPieces[topCoords][leftCoords - 1], chessPieces[topCoords][leftCoords], chessPieces[topCoords][leftCoords + 1])
+                            if(chessPieces[topCoords - 1][leftCoords - 1].slice(0, 1) == "B"){
+                                console.log("Is Attacking Piece")
+                                document.getElementsByClassName("chessPiece")[topCoords * 8 + leftCoords - 7].style.fill = "green"
+                                console.log("Attacking piece should be", document.getElementsByClassName("chessPiece")[topCoords * 8 + leftCoords - 1])
+                                attackList.push([leftCoords - 1, topCoords - 1])
+                            }
+                            if(chessPieces[topCoords - 1][leftCoords + 1].slice(0, 1) == "B"){
+                                console.log("Is Attacking Piece")
+                                document.getElementsByClassName("chessPiece")[topCoords * 8 + leftCoords - 9].style.fill = "green"
+                                console.log("Attacking piece should be", document.getElementsByClassName("chessPiece")[topCoords * 8 + leftCoords + 1])
+                                attackList.push([leftCoords + 1, topCoords - 1])
+                            }
+                            if(!(chessPieces[topCoords - 1][leftCoords + 1].slice(0, 1) == "B" || chessPieces[topCoords - 1][leftCoords - 1].slice(0, 1) == "B")){
+                                moveSpace(leftCoords, topCoords - 1)
+                            }
                             break
 
                         case "WN": 
