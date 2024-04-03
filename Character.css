@@ -1,0 +1,43 @@
+body{
+    background-image: radial-gradient(#00143d 1%, #122d66 100%);
+}
+  
+p{
+    user-select: none;
+    color: lightgray;
+}
+
+#nameTitle{
+    font-size: xxx-large; font-family: monospace; color: white; margin: 0px;
+}
+  
+.prompt{
+    width: fit-content; 
+    border: solid 4px #00143d;
+    box-shadow: lightgray 0px 0px 6px 9px;
+    padding: 1%;
+    margin: auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#submitButton{
+    background-color: transparent;
+    border: solid 2px white;
+    color: white;
+    border-radius: 6px;
+    position: absolute;
+    margin-top: 30px;
+    right: 20px;
+}
+
+.CharacterText{
+    margin: 0px;
+}
+
+.flexBar{
+    width: fit-content;
+    position: relative;
+    margin-left: 10%;
+}
