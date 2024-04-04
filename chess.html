@@ -60,11 +60,11 @@
             container = document.getElementsByTagName("svg")[1]
             for(var y = 0; y < 8; y++){
                 for(var x = 0; x < 8; x++){
-                    var newText = document.createElementNS("http://www.w3.org/2000/svg", "text")
+                    var newText = document.createElementNS("http://www.w3.org/2000/svg", "image")
                     newText.setAttribute("x", 6 + x * 50)
                     newText.setAttribute("y", 46 + y * 50)
                     newText.setAttribute("class", "chessPiece")
-                    newText.innerHTML = chessPieces[y][x].slice(1, 2)
+                    newText.src= chessPieces[y][x].slice(1, 2)
                     container.appendChild(newText)             
                 }
             }
@@ -79,7 +79,6 @@
                 if(chessPieces[latterY][latterX] != "  "){
                     document.getElementsByClassName("chessPiece")[formerY * 8 + formerX].textContent = " "
                 }
-                playStage = "selectPiece"
             }
 
             function gameOperator(e){
@@ -106,7 +105,7 @@
                         break
                     
                     case "opponentTurn":
-                        // playStage = "selectPiece"
+                        playStage = "selectPiece"
                         break
                     
                     default:
@@ -145,26 +144,7 @@
                                 attackList.push([leftCoords + 1, topCoords - 1])
                             }
                             if(!(chessPieces[topCoords - 1][leftCoords + 1].slice(0, 1) == "B" || chessPieces[topCoords - 1][leftCoords - 1].slice(0, 1) == "B")){
-                                container = document.getElementsByTagName("svg")[1]
-                                
-                                if(!(7 >= x && x >= 0 && 7 >= y && y >= 0)){
-                                    console.log("Not In Board")
-                                    break
-                                }
-                                if(chessPieces[topCoords - 1][leftCoords + 1] != "  "){
-                                    let circle = document.createElementNS("http://www.w3.org/2000/svg", "circle")
-                                    circle.setAttribute("class", "circle")
-                                    selectedParts.push([x, y])
-                                    circle.setAttribute("cx", x * (container.clientWidth / 8) + 25)
-                                    circle.setAttribute("cy", y * (container.clientHeight / 8) + 25)
-                                    circle.setAttribute("r", 15)
-                                    circle.addEventListener("click", (e) => {
-                                        setPiece(e)
-                                    })
-
-                                    container.appendChild(circle)
-                                    console.log("Checking Step", x, y, circle)
-                                }
+                                moveSpace(leftCoords, topCoords - 1)
                             }
                             break
 
@@ -298,10 +278,10 @@
                 console.log("Move To", newCoords[0], newCoords[1])
                 var changedPiece = chessPieces[playerMoves[playerMoves.length - 1][1]][playerMoves[playerMoves.length - 1][0]]
                 chessPieces[playerMoves[playerMoves.length - 1][1]][playerMoves[playerMoves.length - 1][0]] = "  "
-                container.getElementsByTagName("text")[playerMoves[playerMoves.length - 1][1] * 8 + playerMoves[playerMoves.length - 1][0]].textContent = "  "
+                container.getElementsByTagName("image")[playerMoves[playerMoves.length - 1][1] * 8 + playerMoves[playerMoves.length - 1][0]].textContent = "  "
                 playerMoves.push([newCoords[0], newCoords[1]])
                 chessPieces[playerMoves[playerMoves.length - 1][1]][playerMoves[playerMoves.length - 1][0]] = changedPiece
-                container.getElementsByTagName("text")[playerMoves[playerMoves.length - 1][1] * 8 + playerMoves[playerMoves.length - 1][0]].textContent = changedPiece.slice(1, 2)
+                container.getElementsByTagName("image")[playerMoves[playerMoves.length - 1][1] * 8 + playerMoves[playerMoves.length - 1][0]].textContent = changedPiece.slice(1, 2)
                 for(var removeCircle = 0; removeCircle < circlesLength; removeCircle++){
                     document.getElementsByClassName("circle")[0].remove()
                 }
