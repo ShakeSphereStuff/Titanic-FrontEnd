@@ -78,7 +78,6 @@
                 if(chessPieces[latterY][latterX] != "  "){
                     document.getElementsByClassName("chessPiece")[formerY * 8 + formerX].textContent = " "
                 }
-                playStage = "selectPiece"
             }
 
             function gameOperator(e){
@@ -105,7 +104,7 @@
                         break
                     
                     case "opponentTurn":
-                        // playStage = "selectPiece"
+                        playStage = "selectPiece"
                         break
                     
                     default:
@@ -144,26 +143,7 @@
                                 attackList.push([leftCoords + 1, topCoords - 1])
                             }
                             if(!(chessPieces[topCoords - 1][leftCoords + 1].slice(0, 1) == "B" || chessPieces[topCoords - 1][leftCoords - 1].slice(0, 1) == "B")){
-                                container = document.getElementsByTagName("svg")[1]
-                                
-                                if(!(7 >= x && x >= 0 && 7 >= y && y >= 0)){
-                                    console.log("Not In Board")
-                                    break
-                                }
-                                if(chessPieces[topCoords - 1][leftCoords + 1] != "  "){
-                                    let circle = document.createElementNS("http://www.w3.org/2000/svg", "circle")
-                                    circle.setAttribute("class", "circle")
-                                    selectedParts.push([x, y])
-                                    circle.setAttribute("cx", x * (container.clientWidth / 8) + 25)
-                                    circle.setAttribute("cy", y * (container.clientHeight / 8) + 25)
-                                    circle.setAttribute("r", 15)
-                                    circle.addEventListener("click", (e) => {
-                                        setPiece(e)
-                                    })
-
-                                    container.appendChild(circle)
-                                    console.log("Checking Step", x, y, circle)
-                                }
+                                moveSpace(leftCoords, topCoords - 1)
                             }
                             break
 
