@@ -1,354 +1,76 @@
-<html>
-    <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Board</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #24242a;
+        }
+        svg {
+            border: 2px solid #fff;
+        }
+    </style>
+</head>
+<body>
+    <svg width="400" height="400" viewBox="0 0 400 400"></svg>
 
-    </head>
-    <body style="background-color: #24242a; margin: 0px;">
-        <div style="position: absolute; height: 10%; width: 100%; background-color: #40415e;"> 
-            <div style="left: 10%; position: relative; top: 50%; height: 25%; max-width: 300px; transform: translate(0px, -50%); display: flex;">
-                <img></img>
-                <p style="margin: auto 0px; position: absolute; color: white; font-family: monospace; font-size: 200%;">
-                    AI (Black)
-                </p>
-            </div>
-        </div>
-        <div style="position: absolute; top: 90%; height: 10%; width: 100%; background-color: #40415e;">
-            <div style="left: 10%; position: relative; top: 50%; height: 25%; max-width: 300px; transform: translate(0px, -50%); display: flex;">
-                <img></img>
-                <p style="margin: auto 0px; position: absolute; color: white; font-family: monospace; font-size: 200%;">
-                    You (White)
-                </p>
-            </div>
-        </div>
-        
-        <svg width="400" height="400" viewBox="0 0 400 400" style="left: 50%; top: 50%; position: absolute; transform: translate(-50%, -50%);"></svg>
-        <svg width="400" height="400" viewBox="0 0 400 400" style="left: 50%; top: 50%; position: absolute; transform: translate(-50%, -50%);"></svg>
+    <script>
+        const container = document.querySelector("svg");
+        const chessPieces = [
+            ["BR", "BN", "BB", "BQ", "BK", "BB", "BN", "BR"],
+            ["BP", "BP", "BP", "BP", "BP", "BP", "BP", "BP"],
+            ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
+            ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
+            ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
+            ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
+            ["WP", "WP", "WP", "WP", "WP", "WP", "WP", "WP"],
+            ["WR", "WN", "WB", "WQ", "WK", "WB", "WN", "WR"],
+        ];
 
-        <script>
-            var container = document.getElementsByTagName("svg")[0]   //hjhjhj
-            var chessPieces = [ 
-                ["BR", "BN", "BB", "BQ", "BK", "BB", "BN", "BR"],
-                ["BP", "BP", "BP", "BP", "BP", "BP", "BP", "BP"],
-                ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
-                ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
-                ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
-                ["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "],
-                ["WP", "WP", "WP", "WP", "WP", "WP", "WP", "WP"],
-                ["WR", "WN", "WB", "WQ", "WK", "WB", "WN", "WR"],
-            ]
-            // var selectedPiece = [-1, -1]
-            var selectedParts = []
-            var chessImages = ["https://www.google.com/url?sa=i&url=https%3A%2F%2Fchess.fandom.com%2Fwiki%2FPawn&psig=AOvVaw03x4HULBw9HlMik64NZk4l&ust=1712181051559000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCPiVis_BpIUDFQAAAAAdAAAAABAE", "https://www.google.com/url?sa=i&url=https%3A%2F%2Fchess.fandom.com%2Fwiki%2FKnight&psig=AOvVaw0niuVHK68znTnnjwd0j_2V&ust=1712181246422000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCNjgpqnCpIUDFQAAAAAdAAAAABAE", "https://www.google.com/url?sa=i&url=https%3A%2F%2Fchess.fandom.com%2Fwiki%2FRook&psig=AOvVaw2v06Wu-ygseKRzVDpDIcsm&ust=1712181282513000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCMj697rCpIUDFQAAAAAdAAAAABAJ", "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fpin%2F660973682805921555%2F&psig=AOvVaw3BnaZ6JwDfQrw47N-IqCOp&ust=1712181311798000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCJCBwcnCpIUDFQAAAAAdAAAAABAE", "https://www.google.com/url?sa=i&url=https%3A%2F%2Fchess.fandom.com%2Fwiki%2FQueen&psig=AOvVaw2uyi0GHWapDYRgCXaY_9p2&ust=1712181343388000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCIjn5dfCpIUDFQAAAAAdAAAAABAE", "https://www.google.com/url?sa=i&url=https%3A%2F%2Fchess.fandom.com%2Fwiki%2FKing&psig=AOvVaw0bu3HLYJJeA4V2fxEoNKTs&ust=1712181363983000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCOjivuHCpIUDFQAAAAAdAAAAABAI"]
-            var attackList = []
-            var playerMoves = []
-            var playStage = "selectPiece" 
-            for(var y = 0; y < 8; y++){
-                for(var x = 0; x < 8; x++){
-                    var newSquare = document.createElementNS("http://www.w3.org/2000/svg", "rect")
-                    newSquare.setAttribute("width", container.clientWidth / 8)
-                    newSquare.setAttribute("height", container.clientHeight / 8)
-                    newSquare.setAttribute("x", (container.clientWidth / 8) * x)
-                    newSquare.setAttribute("y", (container.clientHeight / 8) * y)
-                    if((y * 7 + x) % 2 == 0){
-                        newSquare.setAttribute("fill", "black")
-                        container.appendChild(newSquare)
-                        continue
-                    }
-                    newSquare.setAttribute("fill", "white")
-                    container.appendChild(newSquare)
+        const chessImages = {
+            "BR": "https://camo.githubusercontent.com/98b0ef0f098bf6dfb4bf17194c2b92a5e43bd794403d179fec2b770362b4d514/68747470733a2f2f696d616765732e6368657373636f6d66696c65732e636f6d2f63686573732d7468656d65732f7069656365732f6e656f2f3235362f62722e706e67",
+            "BN": "https://camo.githubusercontent.com/dc90ab960a2a36bc1f9632b6149969932567145028b885fd97d537b0ceab31f7/68747470733a2f2f696d616765732e6368657373636f6d66696c65732e636f6d2f63686573732d7468656d65732f7069656365732f6e656f2f3235362f626e2e706e67",
+            "BB": "https://camo.githubusercontent.com/fdfae644a22760250135125bd8b7a346c1dc7d394ac6c3b5d683cbe9e7d55eaa/68747470733a2f2f696d616765732e6368657373636f6d66696c65732e636f6d2f63686573732d7468656d65732f7069656365732f6e656f2f3235362f62622e706e67",
+            "BQ": "https://camo.githubusercontent.com/783590051b014660b22bef258c5fdd769e6916c3e63c3c27cfa0dec0533376ff/68747470733a2f2f696d616765732e6368657373636f6d66696c65732e636f6d2f63686573732d7468656d65732f7069656365732f6e656f2f3235362f62712e706e67",
+            "BK": "https://camo.githubusercontent.com/58284a3e3def654664c2fac12b4c3b2c782260fd2b81798741490f2205ef90d8/68747470733a2f2f696d616765732e6368657373636f6d66696c65732e636f6d2f63686573732d7468656d65732f7069656365732f6e656f2f3235362f626b2e706e67",
+            "BP": "https://camo.githubusercontent.com/06144151c8d292420fd1d0213eb537ee8c2e5a74c9b7cf252487da75737b259c/68747470733a2f2f696d616765732e6368657373636f6d66696c65732e636f6d2f63686573732d7468656d65732f7069656365732f6e656f2f3235362f62702e706e67",
+            "WR": "https://camo.githubusercontent.com/575a1eb1bfa6ed5047cc4fe8ea41d8d2f2cf103b66eedfb6da83a4fca668fad7/68747470733a2f2f696d616765732e6368657373636f6d66696c65732e636f6d2f63686573732d7468656d65732f7069656365732f6e656f2f3235362f77722e706e67",
+            "WN": "https://camo.githubusercontent.com/c387d05b9956e12a4350a2ea7550370b73a7c8d33026fcb7aaefc26757b499cc/68747470733a2f2f696d616765732e6368657373636f6d66696c65732e636f6d2f63686573732d7468656d65732f7069656365732f6e656f2f3235362f776e2e706e67",
+            "WB": "https://camo.githubusercontent.com/38fd882af5a9b7075088865f5bd5188e2e951129172a7060404a1e2e9b41b066/68747470733a2f2f696d616765732e6368657373636f6d66696c65732e636f6d2f63686573732d7468656d65732f7069656365732f6e656f2f3235362f77622e706e67",
+            "WQ": "https://camo.githubusercontent.com/7858077c7e63bab5a162038c0d5093b75706b29e97ccb37cb3716a64aa2eb9cf/68747470733a2f2f696d616765732e6368657373636f6d66696c65732e636f6d2f63686573732d7468656d65732f7069656365732f6e656f2f3235362f77712e706e67",
+            "WK": "https://camo.githubusercontent.com/4a7c32d92bbcffdfc51e3dbd54d9fdece128c8105be7eb9c4569420495e7e4f2/68747470733a2f2f696d616765732e6368657373636f6d66696c65732e636f6d2f63686573732d7468656d65732f7069656365732f6e656f2f3235362f776b2e706e67",
+            "WP": "https://camo.githubusercontent.com/06bfc1d20e1d241b0f2d991b16252e6f9f907a9320767ea7018d088eba0a6b03/68747470733a2f2f696d616765732e6368657373636f6d66696c65732e636f6d2f63686573732d7468656d65732f7069656365732f6e656f2f3235362f77702e706e67",
+        };
+
+        // Drawing the chess board
+        for (let y = 0; y < 8; y++) {
+            for (let x = 0; x < 8; x++) {
+                let newSquare = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                newSquare.setAttribute("width", 50); // Adjust based on SVG size
+                newSquare.setAttribute("height", 50); // Adjust based on SVG size
+                newSquare.setAttribute("x", 50 * x);
+                newSquare.setAttribute("y", 50 * y);
+                newSquare.setAttribute("fill", (x + y) % 2 === 0 ? "#f0d9b5" : "#b58863");
+                container.appendChild(newSquare);
+
+                let pieceCode = chessPieces[y][x];
+                if (pieceCode.trim() !== "") {
+                    let newImage = document.createElementNS("http://www.w3.org/2000/svg", "image");
+                    newImage.setAttributeNS(null, 'href', chessImages[pieceCode]); // Use the 'href' for modern browsers
+                    newImage.setAttribute("width", 50); // Match square size
+                    newImage.setAttribute("height", 50); // Match square size
+                    newImage.setAttribute("x", 50 * x);
+                    newImage.setAttribute("y", 50 * y);
+                    container.appendChild(newImage);
                 }
             }
-            container = document.getElementsByTagName("svg")[1]
-            for(var y = 0; y < 8; y++){
-                for(var x = 0; x < 8; x++){
-                    var newText = document.createElementNS("http://www.w3.org/2000/svg", "image")
-                    newText.setAttribute("x", 6 + x * 50)
-                    newText.setAttribute("y", 46 + y * 50)
-                    newText.setAttribute("class", "chessPiece")
-                    newText.src= chessPieces[y][x].slice(1, 2)
-                    container.appendChild(newText)             
-                }
-            }
-            container.addEventListener("mousemove", (e) => {gameOperator(e)})
-
-            function opponentMoves(formerX, formerY, latterX, latterY){
-                var oldPiece = document.getElementsByClassName("chessPiece")[latterY * 8 + latterX].textContent
-                chessPieces[latterY][latterX] = chessPieces[formerY][formerX]
-                chessPieces[formerY][formerX] = oldPiece
-                document.getElementsByClassName("chessPiece")[latterY * 8 + latterX].textContent = document.getElementsByClassName("chessPiece")[formerY * 8 + formerX].textContent
-                document.getElementsByClassName("chessPiece")[formerY * 8 + formerX].textContent = oldPiece
-                if(chessPieces[latterY][latterX] != "  "){
-                    document.getElementsByClassName("chessPiece")[formerY * 8 + formerX].textContent = " "
-                }
-            }
-
-            function gameOperator(e){
-                var leftCoords = Math.floor((e.clientX -container.getBoundingClientRect().left) / (container.clientWidth / 8))
-                var topCoords = Math.floor((e.clientY -container.getBoundingClientRect().top) / (container.clientHeight / 8))
-                console.log("Coords", leftCoords, topCoords)
-                switch(playStage){
-                    case "selectPiece":
-                        console.log("Selecting Piece", chessPieces[topCoords][leftCoords])
-                        if(chessPieces[topCoords][leftCoords] != "  "){
-                            container.style.cursor = "pointer"
-                            break
-                        }
-                        container.style.cursor = "default"
-                        break
-
-                    case "moveTo":
-                        console.log("Selecting Piece", chessPieces[topCoords][leftCoords])
-                        if(chessPieces[topCoords][leftCoords] != "  "){
-                            container.style.cursor = "pointer"
-                            break
-                        }
-                        container.style.cursor = "default"
-                        break
-                    
-                    case "opponentTurn":
-                        playStage = "selectPiece"
-                        break
-                    
-                    default:
-                        "break"
-                }
-            }
-
-            container.addEventListener("mouseup", (e) => {selectPiece(e)})
-
-            function selectPiece(e){
-                var leftCoords = Math.floor((e.clientX - container.getBoundingClientRect().left) / (container.clientWidth / 8))
-                var topCoords = Math.floor((e.clientY - container.getBoundingClientRect().top) / (container.clientHeight / 8))
-                console.log("Selecting Piece", chessPieces[topCoords][leftCoords], "at", topCoords, leftCoords)
-                if(chessPieces[topCoords][leftCoords] != "  " && playStage == "selectPiece"){
-                    console.log("Now Playing", chessPieces[topCoords][leftCoords])
-                    playerMoves.push([leftCoords, topCoords])
-                    playStage = "moveTo"
-                    switch(chessPieces[topCoords][leftCoords]){
-                        case "WP":
-                            if(chessPieces[topCoords][leftCoords] == "WP" && topCoords == 6){
-                                moveSpace(leftCoords, topCoords - 1)
-                                moveSpace(leftCoords, topCoords - 2)
-                                break
-                            }
-                            console.log("Adjesent Pieces are", chessPieces[topCoords][leftCoords - 1], chessPieces[topCoords][leftCoords], chessPieces[topCoords][leftCoords + 1])
-                            if(chessPieces[topCoords - 1][leftCoords - 1].slice(0, 1) == "B"){
-                                console.log("Is Attacking Piece")
-                                document.getElementsByClassName("chessPiece")[topCoords * 8 + leftCoords - 7].style.fill = "green"
-                                console.log("Attacking piece should be", document.getElementsByClassName("chessPiece")[topCoords * 8 + leftCoords - 1])
-                                attackList.push([leftCoords - 1, topCoords - 1])
-                            }
-                            if(chessPieces[topCoords - 1][leftCoords + 1].slice(0, 1) == "B"){
-                                console.log("Is Attacking Piece")
-                                document.getElementsByClassName("chessPiece")[topCoords * 8 + leftCoords - 9].style.fill = "green"
-                                console.log("Attacking piece should be", document.getElementsByClassName("chessPiece")[topCoords * 8 + leftCoords + 1])
-                                attackList.push([leftCoords + 1, topCoords - 1])
-                            }
-                            if(!(chessPieces[topCoords - 1][leftCoords + 1].slice(0, 1) == "B" || chessPieces[topCoords - 1][leftCoords - 1].slice(0, 1) == "B")){
-                                moveSpace(leftCoords, topCoords - 1)
-                            }
-                            break
-
-                        case "WN": 
-                            moveSpace(leftCoords - 2, topCoords - 1)
-                            moveSpace(leftCoords - 2, topCoords + 1)
-                            moveSpace(leftCoords + 2, topCoords - 1)
-                            moveSpace(leftCoords + 2, topCoords + 1)
-                            moveSpace(leftCoords - 1, topCoords - 2)
-                            moveSpace(leftCoords - 1, topCoords + 2)
-                            moveSpace(leftCoords + 1, topCoords - 2)
-                            moveSpace(leftCoords + 1, topCoords + 2)
-                            break
-
-                        case "WR":
-                            moveLine(leftCoords, topCoords, `${leftCoords}, ${topCoords} - step`)
-                            moveLine(leftCoords, topCoords, `${leftCoords}, ${topCoords} + step`)
-                            moveLine(leftCoords, topCoords, `${leftCoords} - step, ${topCoords}`)
-                            moveLine(leftCoords, topCoords, `${leftCoords} + step, ${topCoords}`)
-                            break
-
-                        case "WB":
-                            moveLine(leftCoords, topCoords, `x - step, y - step`)
-                            moveLine(leftCoords, topCoords, `x - step, y + step`)
-                            moveLine(leftCoords, topCoords, `x + step, y - step`)
-                            moveLine(leftCoords, topCoords, `x + step, y + step`)
-                            break
-                        
-                        case "WQ":
-                            console.log("Queen Was Selected with coords", leftCoords, topCoords)
-                            moveLine(leftCoords, topCoords, `${leftCoords}, ${topCoords} + step`)
-                            moveLine(leftCoords, topCoords, `${leftCoords}, ${topCoords} - step`)
-                            moveLine(leftCoords, topCoords, `${leftCoords} - step, ${topCoords}`)
-                            moveLine(leftCoords, topCoords, `${leftCoords} + step, ${topCoords}`)
-                            moveLine(leftCoords, topCoords, `x - step, y - step`)
-                            moveLine(leftCoords, topCoords, `x - step, y + step`)
-                            moveLine(leftCoords, topCoords, `x + step, y - step`)
-                            moveLine(leftCoords, topCoords, `x + step, y + step`)
-                            break
-
-                        case "WK":
-                            moveSpace(leftCoords - 1, topCoords - 1)
-                            moveSpace(leftCoords - 1, topCoords)
-                            moveSpace(leftCoords - 1, topCoords + 1)
-                            moveSpace(leftCoords, topCoords + 1)
-                            moveSpace(leftCoords + 1, topCoords + 1)
-                            moveSpace(leftCoords + 1, topCoords)
-                            moveSpace(leftCoords + 1, topCoords - 1)
-                            moveSpace(leftCoords, topCoords - 1)
-                            break
-
-                        default:
-                            break
-                    }
-                    return
-                }
-                if(chessPieces[topCoords][leftCoords].slice(0, 1) == "W" && playStage == "moveTo"){
-                    playStage = "selectPiece"
-                    var circlesLength = document.getElementsByClassName("circle").length
-                    var attackLength = attackList.length
-                    for(var removeCircle = 0; removeCircle < circlesLength; removeCircle++){
-                        document.getElementsByClassName("circle")[0].remove()
-                    }
-                    for(var removeAttack = 0; removeAttack < attackLength; removeAttack++){
-                        document.getElementsByClassName("chessPiece")[attackList[0][1] * 8 + attackList[0][0]].style.fill = ""
-                        attackList.splice(0, 1)
-                    }
-                }
-                if(chessPieces[topCoords][leftCoords].slice(0, 1) == "B" && playStage == "moveTo"){
-                    console.log("Player Moves are", playerMoves)
-                    attackPiece(
-                       document.getElementsByClassName("chessPiece")[topCoords * 8 + leftCoords],
-                       document.getElementsByClassName("chessPiece")[playerMoves[playerMoves.length - 1][1] * 8 + playerMoves[playerMoves.length - 1][0]]
-                    )
-                }
-            }
-
-            function moveLine(x, y, algorithm){
-                var step = 1
-                console.log("First Step is", eval(algorithm.split(",")[0]), eval(algorithm.split(",")[1]))
-                for(var step = 1; step < 8; step++){
-                    var testSpace = moveSpace(eval(algorithm.split(",")[0]), eval(algorithm.split(",")[1]))
-                    console.log("TestSpace Returns", testSpace)
-                    if(!testSpace){
-                        return
-                    }
-                }
-            }
-
-            function moveSpace(x, y){
-                container = document.getElementsByTagName("svg")[1]
-                console.log("Piece Coords are", x, y)
-                if(!(7 >= x && x >= 0 && 7 >= y && y >= 0)){
-                    console.log("Not In Board")
-                    return false
-                }
-                if(chessPieces[y][x].slice(0, 1) == "W"){
-                    console.log("Is Rejected")
-                    return false
-                }
-                if(chessPieces[y][x].slice(0, 1) == "B"){
-                    console.log("Is Attacking Piece")
-                    document.getElementsByClassName("chessPiece")[y * 8 + x].style.fill = "green"
-                    console.log("Attacking piece should be", document.getElementsByClassName("chessPiece")[y * 8 + x])
-                    attackList.push([x, y])
-                    return false
-                }
-                let circle = document.createElementNS("http://www.w3.org/2000/svg", "circle")
-                circle.setAttribute("class", "circle")
-                selectedParts.push([x, y])
-                circle.setAttribute("cx", x * (container.clientWidth / 8) + 25)
-                circle.setAttribute("cy", y * (container.clientHeight / 8) + 25)
-                circle.setAttribute("r", 15)
-                circle.addEventListener("click", (e) => {
-                    setPiece(e)
-                })
-
-                container.appendChild(circle)
-                console.log("Checking Step", x, y, circle)
-                return true
-            }
-
-            function setPiece(e){
-                playStage = "opponentTurn"
-                var circlesLength = document.getElementsByClassName("circle").length
-                var attackLength = attackList.length
-                var newCoords = [
-                    Math.floor((e.clientX - container.getBoundingClientRect().left) / (container.clientWidth / 8)), 
-                    Math.floor((e.clientY - container.getBoundingClientRect().top) / (container.clientHeight / 8))
-                ]
-                console.log("Move To", newCoords[0], newCoords[1])
-                var changedPiece = chessPieces[playerMoves[playerMoves.length - 1][1]][playerMoves[playerMoves.length - 1][0]]
-                chessPieces[playerMoves[playerMoves.length - 1][1]][playerMoves[playerMoves.length - 1][0]] = "  "
-                container.getElementsByTagName("image")[playerMoves[playerMoves.length - 1][1] * 8 + playerMoves[playerMoves.length - 1][0]].textContent = "  "
-                playerMoves.push([newCoords[0], newCoords[1]])
-                chessPieces[playerMoves[playerMoves.length - 1][1]][playerMoves[playerMoves.length - 1][0]] = changedPiece
-                container.getElementsByTagName("image")[playerMoves[playerMoves.length - 1][1] * 8 + playerMoves[playerMoves.length - 1][0]].textContent = changedPiece.slice(1, 2)
-                for(var removeCircle = 0; removeCircle < circlesLength; removeCircle++){
-                    document.getElementsByClassName("circle")[0].remove()
-                }
-                for(var removeAttack = 0; removeAttack < attackLength; removeAttack++){
-                    document.getElementsByClassName("chessPiece")[attackList[0][1] * 8 + attackList[0][0]].style.fill = ""
-                    attackList.splice(0, 1)
-                }
-            }
-
-            function attackPiece(attackingPiece, attackedPiece){
-
-                console.log("attackedPiece is", attackedPiece)
-
-                if(attackedPiece.textContent.replaceAll(" ", "") == ""){
-                    selectPiece(attack)
-                }
-
-                var attackingX = Math.floor((attackingPiece.getBoundingClientRect().x - container.getBoundingClientRect().x) / (container.clientWidth / 8))
-                var attackingY = Math.floor((attackingPiece.getBoundingClientRect().y - container.getBoundingClientRect().y) / (container.clientHeight / 8)) + 1
-                var attackedX = Math.floor((attackedPiece.getBoundingClientRect().x - container.getBoundingClientRect().x) / (container.clientWidth / 8))
-                var attackedY = Math.floor((attackedPiece.getBoundingClientRect().y - container.getBoundingClientRect().y) / (container.clientHeight / 8)) + 1
-                var attackLength = attackList.length
-                var circlesLength = document.getElementsByClassName("circle").length
-
-                for(var removeCircle = 0; removeCircle < circlesLength; removeCircle++){
-                    document.getElementsByClassName("circle")[0].remove()
-                }
-
-                for(var removeAttack = 0; removeAttack < attackLength; removeAttack++){
-                    document.getElementsByClassName("chessPiece")[attackList[0][1] * 8 + attackList[0][0]].style.fill = ""
-                    attackList.splice(0, 1)
-                }
-
-                console.log("Attacked", attackedX, attackedY, "with attackor", attackingX, attackingY)
-                console.log("Pieces are", attackedPiece.textContent, attackingPiece.textContent)
-                chessPieces[attackingY][attackingX] = chessPieces[attackedY][attackedX]
-                chessPieces[attackedY][attackedX] = "  "
-                attackingPiece.textContent = attackedPiece.textContent
-                attackedPiece.textContent = "" 
-                playerMoves.push([attackedX, attackedY])
-                // attackingPiece.removeEventListener("mouseup", (e) => {
-                //     selectPiece(e)
-                //     gameOperator(e)
-                // })
-                attackedPiece.removeEventListener("mouseup", (e) => {selectPiece(e)})
-                attackedPiece.removeEventListener("mousemove", (e) => {gameOperator(e)})
-                // attackedPiece.addEventListener("mouseup", (e) => {selectPiece(e)})
-                attackedPiece.addEventListener("mousemove", (e) => {gameOperator(e)})
-                // attackPiece.removeEventListener("mouseup", (e) => {attackPiece(attackingPiece, attackedPiece)})
-                // attackPiece.removeEventListener("mouseup", attackPiece(attackingPiece, attackedPiece))
-                playStage = "opponentTurn"
-                return
-            }
-       </script>
-       <style>
-            .circle{
-                stroke: gray;
-                stroke-width: 5;
-                fill: transparent;
-                cursor: pointer;
-            }
-            .chessPiece{
-                fill: gray;
-                font-family: monospace;
-                font-size: 60;
-                user-select: none;
-            }
-        </style>
-    </body>
+        }
+    </script>
+</body>
 </html>
