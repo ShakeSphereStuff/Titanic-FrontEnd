@@ -170,13 +170,13 @@
                             console.log("Adjesent Pieces are", chessPieces[topCoords][leftCoords - 1], chessPieces[topCoords][leftCoords], chessPieces[topCoords][leftCoords + 1])
                             if(chessPieces[topCoords - 1][leftCoords - 1].slice(0, 1) == "B"){
                                 console.log("Is Attacking Piece")
-                                document.getElementsByClassName("chessPiece")[topCoords * 8 + leftCoords - 7].style.fill = "green"
+                                document.getElementsByClassName("chessPiece")[topCoords * 8 + leftCoords - 9].style.fill = "green"
                                 console.log("Attacking piece should be", document.getElementsByClassName("chessPiece")[topCoords * 8 + leftCoords - 1])
                                 attackList.push([leftCoords - 1, topCoords - 1])
                             }
                             if(chessPieces[topCoords - 1][leftCoords + 1].slice(0, 1) == "B"){
                                 console.log("Is Attacking Piece")
-                                document.getElementsByClassName("chessPiece")[topCoords * 8 + leftCoords - 9].style.fill = "green"
+                                document.getElementsByClassName("chessPiece")[topCoords * 8 + leftCoords - 2].style.fill = "green"
                                 console.log("Attacking piece should be", document.getElementsByClassName("chessPiece")[topCoords * 8 + leftCoords + 1])
                                 attackList.push([leftCoords + 1, topCoords - 1])
                             }
